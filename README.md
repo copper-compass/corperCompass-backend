@@ -14,7 +14,10 @@ Social Media Blurb:
 💰 Estimate your monthly budget
 🗺️ Learn local culture & customs
 ✅ Track your relocation checklist
-No gimmicks, no payments—just the info you need. Start exploring at [link] #NYSC #CorperCompass #RelocationMadeEasy
+No gimmicks, no payments—just the info you need. Start exploring at http://corperCompass.org  
+#NYSC 
+#CorperCompass 
+#RelocationMadeEasy
 
 ---
 
