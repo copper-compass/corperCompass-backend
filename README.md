@@ -53,12 +53,14 @@ frontend - backend communication
 The frontend (React) communicates with the backend (Node.js/Express) via HTTP requests over a RESTful API. 
 
 React Component 
+
     → calls service function 
     → Axios makes HTTP request (with token) 
     → Express route handles request 
     → Controller processes & returns JSON 
     → Axios resolves promise 
-    → Component updates state & re-renders
+    → Component updates state re-renders
+
 ---
 
 ## 📁 Project Structure
