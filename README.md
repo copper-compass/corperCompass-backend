@@ -49,6 +49,16 @@ No gimmicks, no payments—just the info you need. Start exploring at [link] #NY
 - **Context API** – State management (auth)
 - **Plain CSS** – No UI frameworks; custom responsive design
 
+frontend - backend communication 
+The frontend (React) communicates with the backend (Node.js/Express) via HTTP requests over a RESTful API. 
+
+React Component 
+    → calls service function 
+    → Axios makes HTTP request (with token) 
+    → Express route handles request 
+    → Controller processes & returns JSON 
+    → Axios resolves promise 
+    → Component updates state & re-renders
 ---
 
 ## 📁 Project Structure
@@ -85,6 +95,9 @@ corpercompass/
 │   ├── package.json
 │   └── vite.config.js
 └── README.md
+
+
+
 
 ## 🚀 Getting Started
 
