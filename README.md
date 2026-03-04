@@ -6,6 +6,16 @@ CorperCompass is a relocation transition-support platform designed specifically 
 
  This is an informational platform only. No bookings, payments, messaging, or negotiation features are included.
 
+ Think of CorperCompass as your trusted companion—pointing you in the right direction so you can focus on making the most of your service year.
+
+Social Media Blurb:
+✨ Just posted to your dream state? Let CorperCompass be your guide!
+🏠 Find safe areas & lodges
+💰 Estimate your monthly budget
+🗺️ Learn local culture & customs
+✅ Track your relocation checklist
+No gimmicks, no payments—just the info you need. Start exploring at [link] #NYSC #CorperCompass #RelocationMadeEasy
+
 ---
 
  ✨ Features
@@ -43,39 +53,38 @@ CorperCompass is a relocation transition-support platform designed specifically 
 
 ## 📁 Project Structure
 corpercompass/
-├── backend/                 # Node.js + Express API
+├── backend/
 │   ├── src/
-│   │   ├── config/          # Environment & DB config
-│   │   ├── controllers/     # Request handlers
-│   │   ├── middleware/      # Auth, validation, error handling
-│   │   ├── models/          # Mongoose schemas
-│   │   ├── routes/          # API route definitions
-│   │   ├── services/        # Business logic
-│   │   ├── utils/           # Helpers (logger, calculator)
-│   │   ├── validation/      # Request validation schemas
-│   │   └── app.js           # Express app setup
-│   ├── tests/               # Unit & integration tests
-│   ├── .env.example         # Environment variables template
-│   └── server.js            # Entry point
-├── frontend/                # React + Vite application
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── validation/
+│   │   └── app.js
+│   ├── tests/
+│   ├── .env.example
+│   ├── package.json
+│   └── server.js
+├── frontend/
 │   ├── public/
 │   ├── src/
-│   │   ├── assets/          # Images, fonts
-│   │   ├── components/      # Reusable UI components
-│   │   ├── hooks/           # Custom React hooks
-│   │   ├── pages/           # Page-level components
-│   │   ├── services/        # API client functions
-│   │   ├── store/           # Context providers
-│   │   ├── utils/           # Constants, helpers
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── store/          (if using Context)
+│   │   ├── utils/
 │   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css        # Global styles
+│   │   ├── index.css
+│   │   └── main.jsx
 │   ├── index.html
-│   ├── vite.config.js
-│   └── package.json
-├── README.md
-└── .gitignore
-
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
 
 ## 🚀 Getting Started
 
