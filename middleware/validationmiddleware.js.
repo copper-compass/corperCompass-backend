@@ -1,0 +1,27 @@
+const { body, validationResult } = require('express-validator');
+
+const validate = (validations) => {
+  return async (req, res, next) => {
+    for (let validation of validations) {
+      await validation.run(req);
+    }
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+    res.status(400).json({ errors: errors.array() });
+  };
+};
+
+const registerValidation = [
+  body('email').isEmail().normalizeEmail(),
+  body('password').isLength({ min: 6 }),
+  body('role').optional().isIn(['user', 'admin'])
+];
+
+const loginValidation = [
+  body('email').isEmail().normalizeEmail(),
+  body('password').notEmpty()
+];
+
+module.exports = { validate, registerValidation, loginValidation };
