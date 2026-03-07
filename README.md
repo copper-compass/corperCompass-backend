@@ -85,23 +85,7 @@ React Component
 - Payload size limit
 - Logout endpoint clears cookie
 
-## Getting Started
 
-### Prerequisites
-
-- Node.js (v18+)
-- MongoDB (local or Atlas)
-- Paystack account (for payments)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/corpercompass.git
-   cd corpercompass
-
- 
----
 
  ✨
 
@@ -250,23 +234,25 @@ corpercompass/
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or later)
-- npm or yarn
-- MongoDB instance (local or Atlas)
+
+- Node.js (v18+)
+- MongoDB (local or Atlas)
+- Paystack account (for payments)
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/corpercompass.git
+   git clone https://github.com/reignnrule11/corpercompass.git
    cd corpercompass
-```
+
 
 1. Backend setup
    ```bash
    cd backend
    npm install
    cp .env.example .env
+   
    # Edit .env with your MongoDB URI, JWT secret, and port
    ```
 2. Frontend setup
@@ -283,7 +269,7 @@ Backend (.env)
 
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/corpercompass
+MONGODB_URI=mongodb://localhost:5000/corpercompass
 JWT_SECRET=your_super_secret_key_change_me
 NODE_ENV=development
 ```
@@ -291,7 +277,7 @@ NODE_ENV=development
 Frontend (.env)
 
 ```
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5173/api
 ```
 
 Database Seeding (Optional)
