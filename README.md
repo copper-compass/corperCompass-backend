@@ -4,25 +4,36 @@ CorperCompass is your all-in-one relocation guide for a smooth transition into N
 
 CorperCompass is a relocation transition-support platform designed specifically for NYSC (National Youth Service Corps) members in Nigeria. It helps corpers navigate their new environment by providing curated information on areas, lodges, cultural onboarding, a relocation checklist, and a budget estimator.
 
- This is an informational platform only. No bookings, payments, messaging, or negotiation features are included.
+ # CorperCompass
 
- Think of CorperCompass as your trusted companion—pointing you in the right direction so you can focus on making the most of your service year.
+CorperCompass is a relocation transition-support platform for NYSC corpers moving across different geopolitical regions in Nigeria. It provides structured guidance before travel, during arrival, and early settlement.
+
+Think of CorperCompass as your trusted companion—pointing you in the right direction so you can focus on making the most of your service year.
 
 Social Media Blurb:
 ✨ Just posted to your dream state? Let CorperCompass be your guide!
 🏠 Find safe areas & lodges
 💰 Estimate your monthly budget
 🗺️ Learn local culture & customs
-✅ Track your relocation checklist
-No gimmicks, no payments—just the info you need. Start exploring at http://corperCompass.org  
+✅ Track your relocation checklist. 
+Start exploring at http://corperCompass.org  
 #NYSC 
 #CorperCompass 
 #RelocationMadeEasy
 
----
 
- ✨ Features
 
+
+## Features
+
+- **User authentication** (JWT in HTTP‑only cookies)
+- **Relocation journey dashboard** with checklist
+- **Area intelligence** (rent, transport, safety, lifestyle notes)
+- Lodge directory (admin‑managed)
+- **Cultural onboarding** content
+- **Relocation budget** estimator
+- **Admin panel** for content management
+- **Marketplace extensions**: booking, payments (Paystack), negotiations (conversations), real‑time messaging
 - **Authentication** – JWT-based signup/login with role-based access (user/admin).
 - **Profile Management** – Store posted state, preferences, and personal details.
 - **Relocation Dashboard** – Track progress through a customizable checklist of pre- and post-arrival tasks.
@@ -44,17 +55,17 @@ No gimmicks, no payments—just the info you need. Start exploring at http://cor
 - **express-validator** – Input validation
 - **helmet**, **cors** – Security middleware
 - **jest** + **supertest** – Testing
-
-### Frontend
+- Socket.io, JWT, bcrypt, Helmet, express-rate-limit, express-mongo-sanitize, xss, cookie-parser
+  
+- **Frontend**: React, Vite, React Router, Axios, Socket.io-client
 - **React** (with Vite) – UI library
 - **React Router** – Client-side routing
 - **Axios** – HTTP client
 - **Context API** – State management (auth)
 - **Plain CSS** – No UI frameworks; custom responsive design
-
-frontend - backend communication 
+- frontend - backend communication 
 The frontend (React) communicates with the backend (Node.js/Express) via HTTP requests over a RESTful API. 
-
+**communicanition****Between the** **frontend and backend** 
 React Component 
 
     → calls service function 
@@ -63,46 +74,178 @@ React Component
     → Controller processes & returns JSON 
     → Axios resolves promise 
     → Component updates state re-renders
+    
+## Security
+
+- HTTP‑only signed cookies for JWT storage
+- Rate limiting on auth endpoints
+- Input sanitization against NoSQL injection and XSS
+- Helmet with CSP headers
+- CORS with credentials
+- Payload size limit
+- Logout endpoint clears cookie
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
+- MongoDB (local or Atlas)
+- Paystack account (for payments)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/corpercompass.git
+   cd corpercompass
+
+ 
+---
+
+ ✨
+
+
+
 
 ---
 
 ## 📁 Project Structure
+
 corpercompass/
+├── README.md
+├── .gitignore
 ├── backend/
+│   ├── package.json
+│   ├── .env.example
 │   ├── src/
 │   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
+│   │   │   ├── db.js
+│   │   │   ├── env.js
+│   │   │   └── socket.js
 │   │   ├── models/
+│   │   │   ├── User.js
+│   │   │   ├── Profile.js
+│   │   │   ├── State.js
+│   │   │   ├── Area.js
+│   │   │   ├── Lodge.js
+│   │   │   ├── JourneySection.js
+│   │   │   ├── ChecklistItem.js
+│   │   │   ├── UserChecklistProgress.js
+│   │   │   ├── CulturalContent.js
+│   │   │   ├── EventLog.js
+│   │   │   ├── Booking.js
+│   │   │   ├── Payment.js
+│   │   │   ├── Conversation.js
+│   │   │   └── Message.js
+│   │   ├── controllers/
+│   │   │   ├── authController.js
+│   │   │   ├── journeyController.js
+│   │   │   ├── areaController.js
+│   │   │   ├── lodgeController.js
+│   │   │   ├── cultureController.js
+│   │   │   ├── budgetController.js
+│   │   │   ├── bookingController.js
+│   │   │   ├── paymentController.js
+│   │   │   ├── conversationController.js
+│   │   │   └── messageController.js
+│   │   ├── services/
+│   │   │   ├── budgetService.js
+│   │   │   ├── paymentService.js
+│   │   │   └── messagingService.js
 │   │   ├── routes/
-│   │   ├── services/
+│   │   │   ├── authRoutes.js
+│   │   │   ├── journeyRoutes.js
+│   │   │   ├── areaRoutes.js
+│   │   │   ├── lodgeRoutes.js
+│   │   │   ├── cultureRoutes.js
+│   │   │   ├── budgetRoutes.js
+│   │   │   ├── bookingRoutes.js
+│   │   │   ├── paymentRoutes.js
+│   │   │   ├── conversationRoutes.js
+│   │   │   └── messageRoutes.js
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js
+│   │   │   ├── validationMiddleware.js
+│   │   │   ├── errorHandler.js
+│   │   │   ├── rateLimiter.js
+│   │   │   └── sanitize.js
 │   │   ├── utils/
-│   │   ├── validation/
-│   │   └── app.js
-│   ├── tests/
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── store/          (if using Context)
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-└── README.md
-
-
-
+│   │   │   └── helpers.js
+│   │   ├── app.js
+│   │   └── server.js
+│   └── tests/
+│       ├── auth.test.js
+│       ├── budget.test.js
+│       ├── checklist.test.js
+│       ├── lodgeCRUD.test.js
+│       ├── booking.test.js
+│       └── payment.test.js
+└── frontend/
+    ├── package.json
+    ├── index.html
+    ├── vite.config.js
+    ├── src/
+    │   ├── main.jsx
+    │   ├── App.jsx
+    │   ├── components/
+    │   │   ├── Navbar.jsx
+    │   │   ├── Navbar.css
+    │   │   ├── ProtectedRoute.jsx
+    │   │   ├── ChecklistCard.jsx
+    │   │   ├── ChecklistCard.css
+    │   │   ├── DashboardProgress.jsx
+    │   │   ├── DashboardProgress.css
+    │   │   ├── AreaCard.jsx
+    │   │   ├── AreaCard.css
+    │   │   ├── LodgeCard.jsx
+    │   │   ├── LodgeCard.css
+    │   │   ├── BudgetForm.jsx
+    │   │   ├── BudgetForm.css
+    │   │   ├── BookingCard.jsx
+    │   │   ├── BookingCard.css
+    │   │   ├── MessageList.jsx
+    │   │   ├── MessageList.css
+    │   │   ├── ConversationItem.jsx
+    │   │   └── ConversationItem.css
+    │   ├── pages/
+    │   │   ├── Login.jsx
+    │   │   ├── Register.jsx
+    │   │   ├── Auth.css
+    │   │   ├── Dashboard.jsx
+    │   │   ├── Dashboard.css
+    │   │   ├── AreaIntelligence.jsx
+    │   │   ├── AreaIntelligence.css
+    │   │   ├── LodgeDirectory.jsx
+    │   │   ├── LodgeDirectory.css
+    │   │   ├── BudgetEstimator.jsx
+    │   │   ├── BudgetEstimator.css
+    │   │   ├── CulturalOnboarding.jsx
+    │   │   ├── CulturalOnboarding.css
+    │   │   ├── AdminPanel.jsx
+    │   │   ├── AdminPanel.css
+    │   │   ├── Bookings.jsx
+    │   │   ├── Bookings.css
+    │   │   ├── MakeBooking.jsx
+    │   │   ├── MakeBooking.css
+    │   │   ├── Conversations.jsx
+    │   │   ├── Conversations.css
+    │   │   ├── ConversationDetail.jsx
+    │   │   ├── ConversationDetail.css
+    │   │   └── PaymentSuccess.jsx
+    │   ├── services/
+    │   │   ├── api.js
+    │   │   └── (other service files if needed)
+    │   ├── context/
+    │   │   ├── AuthContext.jsx
+    │   │   └── SocketContext.jsx
+    │   ├── hooks/
+    │   │   ├── useAuth.js
+    │   │   └── useSocket.js
+    │   └── styles/
+    │       └── global.css
+    └── public/
+        └── favicon.ico
 
 ## 🚀 Getting Started
 
