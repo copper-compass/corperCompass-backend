@@ -96,140 +96,61 @@ React Component
 
 ## 📁 Project Structure
 
-corpercompass/
-├── README.md
-├── .gitignore
-├── backend/
-│   ├── package.json
-│   ├── .env.example
-│   ├── src/
-│   │   ├── config/
-│   │   │   ├── db.js
-│   │   │   ├── env.js
-│   │   │   └── socket.js
-│   │   ├── models/
-│   │   │   ├── User.js
-│   │   │   ├── Profile.js
-│   │   │   ├── State.js
-│   │   │   ├── Area.js
-│   │   │   ├── Lodge.js
-│   │   │   ├── JourneySection.js
-│   │   │   ├── ChecklistItem.js
-│   │   │   ├── UserChecklistProgress.js
-│   │   │   ├── CulturalContent.js
-│   │   │   ├── EventLog.js
-│   │   │   ├── Booking.js
-│   │   │   ├── Payment.js
-│   │   │   ├── Conversation.js
-│   │   │   └── Message.js
-│   │   ├── controllers/
-│   │   │   ├── authController.js
-│   │   │   ├── journeyController.js
-│   │   │   ├── areaController.js
-│   │   │   ├── lodgeController.js
-│   │   │   ├── cultureController.js
-│   │   │   ├── budgetController.js
-│   │   │   ├── bookingController.js
-│   │   │   ├── paymentController.js
-│   │   │   ├── conversationController.js
-│   │   │   └── messageController.js
-│   │   ├── services/
-│   │   │   ├── budgetService.js
-│   │   │   ├── paymentService.js
-│   │   │   └── messagingService.js
-│   │   ├── routes/
-│   │   │   ├── authRoutes.js
-│   │   │   ├── journeyRoutes.js
-│   │   │   ├── areaRoutes.js
-│   │   │   ├── lodgeRoutes.js
-│   │   │   ├── cultureRoutes.js
-│   │   │   ├── budgetRoutes.js
-│   │   │   ├── bookingRoutes.js
-│   │   │   ├── paymentRoutes.js
-│   │   │   ├── conversationRoutes.js
-│   │   │   └── messageRoutes.js
-│   │   ├── middleware/
-│   │   │   ├── authMiddleware.js
-│   │   │   ├── validationMiddleware.js
-│   │   │   ├── errorHandler.js
-│   │   │   ├── rateLimiter.js
-│   │   │   └── sanitize.js
-│   │   ├── utils/
-│   │   │   └── helpers.js
-│   │   ├── app.js
-│   │   └── server.js
-│   └── tests/
-│       ├── auth.test.js
-│       ├── budget.test.js
-│       ├── checklist.test.js
-│       ├── lodgeCRUD.test.js
-│       ├── booking.test.js
-│       └── payment.test.js
-└── frontend/
-    ├── package.json
-    ├── index.html
-    ├── vite.config.js
-    ├── src/
-    │   ├── main.jsx
-    │   ├── App.jsx
-    │   ├── components/
-    │   │   ├── Navbar.jsx
-    │   │   ├── Navbar.css
-    │   │   ├── ProtectedRoute.jsx
-    │   │   ├── ChecklistCard.jsx
-    │   │   ├── ChecklistCard.css
-    │   │   ├── DashboardProgress.jsx
-    │   │   ├── DashboardProgress.css
-    │   │   ├── AreaCard.jsx
-    │   │   ├── AreaCard.css
-    │   │   ├── LodgeCard.jsx
-    │   │   ├── LodgeCard.css
-    │   │   ├── BudgetForm.jsx
-    │   │   ├── BudgetForm.css
-    │   │   ├── BookingCard.jsx
-    │   │   ├── BookingCard.css
-    │   │   ├── MessageList.jsx
-    │   │   ├── MessageList.css
-    │   │   ├── ConversationItem.jsx
-    │   │   └── ConversationItem.css
-    │   ├── pages/
-    │   │   ├── Login.jsx
-    │   │   ├── Register.jsx
-    │   │   ├── Auth.css
-    │   │   ├── Dashboard.jsx
-    │   │   ├── Dashboard.css
-    │   │   ├── AreaIntelligence.jsx
-    │   │   ├── AreaIntelligence.css
-    │   │   ├── LodgeDirectory.jsx
-    │   │   ├── LodgeDirectory.css
-    │   │   ├── BudgetEstimator.jsx
-    │   │   ├── BudgetEstimator.css
-    │   │   ├── CulturalOnboarding.jsx
-    │   │   ├── CulturalOnboarding.css
-    │   │   ├── AdminPanel.jsx
-    │   │   ├── AdminPanel.css
-    │   │   ├── Bookings.jsx
-    │   │   ├── Bookings.css
-    │   │   ├── MakeBooking.jsx
-    │   │   ├── MakeBooking.css
-    │   │   ├── Conversations.jsx
-    │   │   ├── Conversations.css
-    │   │   ├── ConversationDetail.jsx
-    │   │   ├── ConversationDetail.css
-    │   │   └── PaymentSuccess.jsx
-    │   ├── services/
-    │   │   ├── api.js
-    │   │   └── (other service files if needed)
-    │   ├── context/
-    │   │   ├── AuthContext.jsx
-    │   │   └── SocketContext.jsx
-    │   ├── hooks/
-    │   │   ├── useAuth.js
-    │   │   └── useSocket.js
-    │   └── styles/
-    │       └── global.css
-    └── public/
-        └── favicon.ico
+backend/
+├── src/
+│   ├── config/
+│   │   └── db.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Profile.js
+│   │   ├── State.js
+│   │   ├── Area.js
+│   │   ├── Lodge.js
+│   │   ├── JourneySection.js
+│   │   ├── ChecklistItem.js
+│   │   ├── UserChecklistProgress.js
+│   │   ├── CulturalContent.js
+│   │   ├── Message.js
+│   │   ├── Negotiation.js
+│   │   └── Payment.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── userController.js
+│   │   ├── areaController.js
+│   │   ├── lodgeController.js
+│   │   ├── checklistController.js
+│   │   ├── cultureController.js
+│   │   ├── budgetController.js
+│   │   ├── messageController.js
+│   │   ├── negotiationController.js
+│   │   └── adminController.js
+│   ├── services/
+│   │   ├── budgetService.js
+│   │   └── paymentService.js (placeholder)
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── userRoutes.js
+│   │   ├── areaRoutes.js
+│   │   ├── lodgeRoutes.js
+│   │   ├── checklistRoutes.js
+│   │   ├── cultureRoutes.js
+│   │   ├── budgetRoutes.js
+│   │   ├── messageRoutes.js
+│   │   ├── negotiationRoutes.js
+│   │   └── adminRoutes.js
+│   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── adminMiddleware.js
+│   │   ├── validationMiddleware.js
+│   │   └── errorHandler.js
+│   ├── utils/
+│   │   └── generateToken.js
+│   ├── app.js
+│   └── server.js
+├── .env
+├── package.json
+└── (tests later)
+
 
 ## 🚀 Getting Started
 
