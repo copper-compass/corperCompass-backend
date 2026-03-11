@@ -52,4 +52,20 @@ app.get('/api/health', (req, res) => {
 // Error handling middleware (should be last)
 app.use(errorHandler);
 
+
 export default app;
+// ... other imports
+
+const app = express();
+
+// Security middleware
+app.use(helmet());
+
+// CORS - allow frontend origin
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
+app.use(cors({
+    origin: frontendUrl,
+    credentials: true,
+}));
+
+// ... rest of the file
