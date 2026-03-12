@@ -22,9 +22,51 @@ Start exploring at http://corperCompass.org
 #RelocationMadeEasy
 
 
+# CorperCompass
 
+**CorperCompass** is a relocation transition-support platform for NYSC corpers. It helps corpers find safe lodges, budget for relocation, access area intelligence, and connect with others.
+
+## Architecture
+
+- **Backend**: Node.js + Express + MongoDB (REST API)
+- **Frontend**: Vanilla HTML/CSS/JavaScript (ES Modules), no frameworks
 
 ## Features
+
+- User authentication (JWT)
+- User profile with posted state
+- Relocation journey checklist
+- Area intelligence (rent, transport, safety, lifestyle)
+- Lodge directory (admin-managed)
+- Cultural onboarding guide
+- Relocation budget estimator
+- Interactive map with markers and heatmap
+- Admin panel for managing areas, lodges, and cultural content
+- Messaging and negotiations (scalable foundation)
+- Payments placeholder for future monetization
+
+## Mapping
+
+The map displays areas and lodges with their geographic coordinates. Two mapping libraries are supported:
+
+- **Google Maps** (requires API key with Maps JavaScript API and Visualization library enabled)
+- **Leaflet** (open-source, no API key required, uses OpenStreetMap tiles)
+
+To use Google Maps, set `MAPS_API_KEY` in `frontend/js/env.js`. For Leaflet, no key is needed.
+
+Backend endpoints:
+- `GET /api/map/markers` – returns all areas and lodges with coordinates.
+- `GET /api/map/heatmap` – returns weighted points for heatmap (based on rent prices).
+
+## Setup
+
+See the README in each repository for detailed setup instructions.
+
+## Docker
+
+Use `docker-compose up -d` from the parent directory containing both repositories to run the entire stack.
+
+
 
 - **User authentication** (JWT in HTTP‑only cookies)
 - **Relocation journey dashboard** with checklist
@@ -57,22 +99,7 @@ Start exploring at http://corperCompass.org
 - **jest** + **supertest** – Testing
 - Socket.io, JWT, bcrypt, Helmet, express-rate-limit, express-mongo-sanitize, xss, cookie-parser
   
-- **Frontend**: React, Vite, React Router, Axios, Socket.io-client
-- **React** (with Vite) – UI library
-- **React Router** – Client-side routing
-** HTTP client**
-- **Context API** – State management (auth)
-- **Plain CSS** – No UI frameworks; custom responsive design
-- frontend - backend communication 
-The frontend (React) communicates with the backend (Node.js/Express) via HTTP requests over a RESTful API. 
-**communicanition****Between the** **frontend and backend** 
-React Component 
-
-    → calls service function 
-    → Express route handles request 
-    → Controller processes & returns JSON 
-    → Axios resolves promise 
-    → Component updates state re-renders
+- **Frontend**: React, Vite, React 
     
 ## Security
 
@@ -83,13 +110,6 @@ React Component
 - CORS with credentials
 - Payload size limit
 - Logout endpoint clears cookie
-
-
-
- ✨
-
-
-
 
 ---
 
