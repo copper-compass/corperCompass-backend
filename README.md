@@ -60,7 +60,7 @@ Start exploring at http://corperCompass.org
 - **Frontend**: React, Vite, React Router, Axios, Socket.io-client
 - **React** (with Vite) – UI library
 - **React Router** – Client-side routing
-- **Axios** – HTTP client
+** HTTP client**
 - **Context API** – State management (auth)
 - **Plain CSS** – No UI frameworks; custom responsive design
 - frontend - backend communication 
@@ -69,7 +69,6 @@ The frontend (React) communicates with the backend (Node.js/Express) via HTTP re
 React Component 
 
     → calls service function 
-    → Axios makes HTTP request (with token) 
     → Express route handles request 
     → Controller processes & returns JSON 
     → Axios resolves promise 
@@ -96,7 +95,7 @@ React Component
 
 ## 📁 Project Structure
 
-backend/
+corpercompass-backend/
 ├── src/
 │   ├── config/
 │   │   └── db.js
@@ -123,10 +122,11 @@ backend/
 │   │   ├── budgetController.js
 │   │   ├── messageController.js
 │   │   ├── negotiationController.js
+│   │   ├── mapController.js          <-- NEW
 │   │   └── adminController.js
 │   ├── services/
 │   │   ├── budgetService.js
-│   │   └── paymentService.js (placeholder)
+│   │   └── paymentService.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── userRoutes.js
@@ -137,6 +137,7 @@ backend/
 │   │   ├── budgetRoutes.js
 │   │   ├── messageRoutes.js
 │   │   ├── negotiationRoutes.js
+│   │   ├── mapRoutes.js              <-- NEW
 │   │   └── adminRoutes.js
 │   ├── middleware/
 │   │   ├── authMiddleware.js
@@ -147,10 +148,12 @@ backend/
 │   │   └── generateToken.js
 │   ├── app.js
 │   └── server.js
+├── tests/
+│   ├── budget.test.js
+│   └── auth.test.js
 ├── .env
 ├── package.json
-└── (tests later)
-
+└── Dockerfile
 
 ## 🚀 Getting Started
 
