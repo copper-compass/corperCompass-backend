@@ -61,7 +61,7 @@ Start exploring at http://corperCompass.org
 - **Budget Estimator** – Calculate estimated monthly expenses with a built-in buffer and risk alerts.
 - **Admin Panel** – CRUD operations for areas, lodges, and cultural content.
 
----
+
 
 
 
