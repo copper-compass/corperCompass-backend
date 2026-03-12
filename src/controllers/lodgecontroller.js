@@ -33,7 +33,15 @@ export const getLodgeById = async (req, res, next) => {
 // @route   POST /api/lodges
 export const createLodge = async (req, res, next) => {
   try {
-    const lodge = await Lodge.create(req.body);
+    const { location, ...rest } = req.body;
+    const lodgeData = { ...rest };
+    if (location && location.coordinates) {
+      lodgeData.location = {
+        type: 'Point',
+        coordinates: location.coordinates,
+      };
+    }
+    const lodge = await Lodge.create(lodgeData);
     res.status(201).json(lodge);
   } catch (error) {
     next(error);
@@ -44,7 +52,17 @@ export const createLodge = async (req, res, next) => {
 // @route   PUT /api/lodges/:id
 export const updateLodge = async (req, res, next) => {
   try {
-    const lodge = await Lodge.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const { location, ...rest } = req.body;
+    const updateData = { ...rest };
+    if (location && location.coordinates) {
+      updateData.location = {
+        type: 'Point',
+        coordinates: location.coordinates,
+      };
+    } else if (location === null) {
+      updateData.location = null;
+    }
+    const lodge = await Lodge.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
     if (!lodge) {
       res.status(404);
       throw new Error('Lodge not found');
