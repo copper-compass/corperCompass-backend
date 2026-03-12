@@ -32,7 +32,15 @@ export const getAreaById = async (req, res, next) => {
 // @route   POST /api/areas
 export const createArea = async (req, res, next) => {
   try {
-    const area = await Area.create(req.body);
+    const { location, ...rest } = req.body;
+    const areaData = { ...rest };
+    if (location && location.coordinates) {
+      areaData.location = {
+        type: 'Point',
+        coordinates: location.coordinates,
+      };
+    }
+    const area = await Area.create(areaData);
     res.status(201).json(area);
   } catch (error) {
     next(error);
@@ -43,7 +51,17 @@ export const createArea = async (req, res, next) => {
 // @route   PUT /api/areas/:id
 export const updateArea = async (req, res, next) => {
   try {
-    const area = await Area.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const { location, ...rest } = req.body;
+    const updateData = { ...rest };
+    if (location && location.coordinates) {
+      updateData.location = {
+        type: 'Point',
+        coordinates: location.coordinates,
+      };
+    } else if (location === null) {
+      updateData.location = null;
+    }
+    const area = await Area.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
     if (!area) {
       res.status(404);
       throw new Error('Area not found');
