@@ -44,6 +44,26 @@ Start exploring at http://corperCompass.org
 - Admin panel for managing areas, lodges, and cultural content
 - Messaging and negotiations (scalable foundation)
 - Payments placeholder for future monetization
+- **User authentication** (JWT in HTTP‑only cookies)
+- **Relocation journey dashboard** with checklist
+- **Area intelligence** (rent, transport, safety, lifestyle notes)
+- Lodge directory (admin‑managed)
+- **Cultural onboarding** content
+- **Relocation budget** estimator
+- **Admin panel** for content management
+- **Marketplace extensions**: booking, payments (Paystack), negotiations (conversations), real‑time messaging
+- **Authentication** – JWT-based signup/login with role-based access (user/admin).
+- **Profile Management** – Store posted state, preferences, and personal details.
+- **Relocation Dashboard** – Track progress through a customizable checklist of pre- and post-arrival tasks.
+- **Area Intelligence** – Browse states, LGAs, and areas with safety ratings, cost of living, and amenities.
+- **Lodge Directory** – Admin-managed list of lodges (informational only) with prices, amenities, and contacts.
+- **Cultural Onboarding Guide** – Learn about local languages, festivals, cuisines, and etiquette by state.
+- **Budget Estimator** – Calculate estimated monthly expenses with a built-in buffer and risk alerts.
+- **Admin Panel** – CRUD operations for areas, lodges, and cultural content.
+
+---
+
+
 
 ## Mapping
 
@@ -68,26 +88,7 @@ Use `docker-compose up -d` from the parent directory containing both repositorie
 
 
 
-- **User authentication** (JWT in HTTP‑only cookies)
-- **Relocation journey dashboard** with checklist
-- **Area intelligence** (rent, transport, safety, lifestyle notes)
-- Lodge directory (admin‑managed)
-- **Cultural onboarding** content
-- **Relocation budget** estimator
-- **Admin panel** for content management
-- **Marketplace extensions**: booking, payments (Paystack), negotiations (conversations), real‑time messaging
-- **Authentication** – JWT-based signup/login with role-based access (user/admin).
-- **Profile Management** – Store posted state, preferences, and personal details.
-- **Relocation Dashboard** – Track progress through a customizable checklist of pre- and post-arrival tasks.
-- **Area Intelligence** – Browse states, LGAs, and areas with safety ratings, cost of living, and amenities.
-- **Lodge Directory** – Admin-managed list of lodges (informational only) with prices, amenities, and contacts.
-- **Cultural Onboarding Guide** – Learn about local languages, festivals, cuisines, and etiquette by state.
-- **Budget Estimator** – Calculate estimated monthly expenses with a built-in buffer and risk alerts.
-- **Admin Panel** – CRUD operations for areas, lodges, and cultural content.
-
----
-
-## 🛠 Tech Stack
+- ## 🛠 Tech Stack
 
 ### Backend
 - **Node.js** + **Express.js** – RESTful API
@@ -97,9 +98,8 @@ Use `docker-compose up -d` from the parent directory containing both repositorie
 - **express-validator** – Input validation
 - **helmet**, **cors** – Security middleware
 - **jest** + **supertest** – Testing
-- Socket.io, JWT, bcrypt, Helmet, express-rate-limit, express-mongo-sanitize, xss, cookie-parser
+-JWT, bcrypt, Helmet, express-rate-limit, express-mongo-sanitize,cookie-parser
   
-- **Frontend**: React, Vite, React 
     
 ## Security
 
