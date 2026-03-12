@@ -12,6 +12,7 @@ import cultureRoutes from './routes/cultureRoutes.js';
 import budgetRoutes from './routes/budgetRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import negotiationRoutes from './routes/negotiationRoutes.js';
+import mapRoutes from './routes/mapRoutes.js';          // NEW
 import adminRoutes from './routes/adminRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
@@ -20,13 +21,14 @@ connectDB();
 
 const app = express();
 
-// Security middleware
+// Security
 app.use(helmet());
 
 // CORS
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
 app.use(cors({
-  origin: 'http://localhost:5500', // frontend dev server, adjust as needed
-  credentials: true,
+    origin: frontendUrl,
+    credentials: true,
 }));
 
 // Body parser
@@ -42,6 +44,7 @@ app.use('/api/culture', cultureRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/negotiations', negotiationRoutes);
+app.use('/api/map', mapRoutes);                         // NEW
 app.use('/api/admin', adminRoutes);
 
 // Health check
@@ -49,23 +52,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'CorperCompass API is running' });
 });
 
-// Error handling middleware (should be last)
+// Error handler
 app.use(errorHandler);
 
-
 export default app;
-// ... other imports
-
-const app = express();
-
-// Security middleware
-app.use(helmet());
-
-// CORS - allow frontend origin
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
-app.use(cors({
-    origin: frontendUrl,
-    credentials: true,
-}));
-
-// ... rest of the file
