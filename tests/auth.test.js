@@ -48,6 +48,6 @@ describe('Auth Endpoints', () => {
         password: 'password123',
       });
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('token');
+    expect(res.headers['set-cookie']).toBeDefined();
   });
 });
