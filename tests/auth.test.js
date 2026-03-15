@@ -26,7 +26,7 @@ describe('Auth Endpoints', () => {
         password: 'password123',
       });
     expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('token');
+    expect(res.headers['set-cookie']).toBeDefined();
     expect(res.body.email).toBe('test@example.com');
   });
 
