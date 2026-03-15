@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../src/app.js';
-import User from '../src/models/User.js';
+import app from '../backend/src/app.js';
+import User from '../backend/src/models/User.js';
 import mongoose from 'mongoose';
 
 describe('Auth Endpoints', () => {
