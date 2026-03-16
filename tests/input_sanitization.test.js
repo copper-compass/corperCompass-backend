@@ -3,6 +3,9 @@ import app from '../backend/src/app.js'
 import User from '../backend/src/models/User.js'
 import mongoose from 'mongoose'
 
+// Set NODE_ENV to test to endure it makes use of the large rate limiting for tests
+// Ensure to change it back to production on launc 
+
 describe('Input Sanitization', () => {
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URI_TEST || 'mongodb://localhost:27017/corpercompass_test')
