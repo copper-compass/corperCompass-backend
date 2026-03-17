@@ -1,0 +1,109 @@
+
+  "info": {
+    "name": "API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        { "name": "Register", "request": { "method": "POST", "header": [], "url": { "raw": "http://localhost:5001/api/auth/register", "host": ["localhost"], "port": "5001", "path": ["api", "auth", "register"] } } },
+        { "name": "Login", "request": { "method": "POST", "header": [], "url": { "raw": "http://localhost:5001/api/auth/login", "host": ["localhost"], "port": "5001", "path": ["api", "auth", "login"] } } },
+        { "name": "Get Me", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/auth/me", "host": ["localhost"], "port": "5001", "path": ["api", "auth", "me"] } } }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        { "name": "Get Profile", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/users/profile", "host": ["localhost"], "port": "5001", "path": ["api", "users", "profile"] } } },
+        { "name": "Update Profile", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/users/profile", "host": ["localhost"], "port": "5001", "path": ["api", "users", "profile"] } } }
+      ]
+    },
+    {
+      "name": "Areas",
+      "item": [
+        { "name": "Get All Areas", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/areas", "host": ["localhost"], "port": "5001", "path": ["api", "areas"] } } },
+        { "name": "Create Area", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/areas", "host": ["localhost"], "port": "5001", "path": ["api", "areas"] } } },
+        { "name": "Get Area By ID", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/areas/:id", "host": ["localhost"], "port": "5001", "path": ["api", "areas", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Update Area", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/areas/:id", "host": ["localhost"], "port": "5001", "path": ["api", "areas", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Area", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/areas/:id", "host": ["localhost"], "port": "5001", "path": ["api", "areas", ":id"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    },
+    {
+      "name": "Lodges",
+      "item": [
+        { "name": "Get All Lodges", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/lodges", "host": ["localhost"], "port": "5001", "path": ["api", "lodges"] } } },
+        { "name": "Create Lodge", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/lodges", "host": ["localhost"], "port": "5001", "path": ["api", "lodges"] } } },
+        { "name": "Get Lodge By ID", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/lodges/:id", "host": ["localhost"], "port": "5001", "path": ["api", "lodges", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Update Lodge", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/lodges/:id", "host": ["localhost"], "port": "5001", "path": ["api", "lodges", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Lodge", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/lodges/:id", "host": ["localhost"], "port": "5001", "path": ["api", "lodges", ":id"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    },
+    {
+      "name": "Culture",
+      "item": [
+        { "name": "Get All Cultural Content", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/culture", "host": ["localhost"], "port": "5001", "path": ["api", "culture"] } } },
+        { "name": "Create Cultural Content", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/culture", "host": ["localhost"], "port": "5001", "path": ["api", "culture"] } } },
+        { "name": "Get Cultural Content By ID", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/culture/:id", "host": ["localhost"], "port": "5001", "path": ["api", "culture", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Update Cultural Content", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/culture/:id", "host": ["localhost"], "port": "5001", "path": ["api", "culture", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Cultural Content", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/culture/:id", "host": ["localhost"], "port": "5001", "path": ["api", "culture", ":id"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        { "name": "Send Message", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/messages", "host": ["localhost"], "port": "5001", "path": ["api", "messages"] } } },
+        { "name": "Get My Messages", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/messages", "host": ["localhost"], "port": "5001", "path": ["api", "messages"] } } },
+        { "name": "Get Conversation", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/messages/conversation/:userId", "host": ["localhost"], "port": "5001", "path": ["api", "messages", "conversation", ":userId"], "variable": [{ "key": "userId", "value": "" }] } } },
+        { "name": "Mark As Read", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/messages/:id/read", "host": ["localhost"], "port": "5001", "path": ["api", "messages", ":id", "read"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    },
+    {
+      "name": "Negotiations",
+      "item": [
+        { "name": "Start Negotiation", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/negotiations", "host": ["localhost"], "port": "5001", "path": ["api", "negotiations"] } } },
+        { "name": "Get My Negotiations", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/negotiations", "host": ["localhost"], "port": "5001", "path": ["api", "negotiations"] } } },
+        { "name": "Get Negotiation By ID", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/negotiations/:id", "host": ["localhost"], "port": "5001", "path": ["api", "negotiations", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Update Negotiation", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/negotiations/:id", "host": ["localhost"], "port": "5001", "path": ["api", "negotiations", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Add Negotiation Message", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/negotiations/:id/messages", "host": ["localhost"], "port": "5001", "path": ["api", "negotiations", ":id", "messages"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    },
+    {
+      "name": "Checklist",
+      "item": [
+        { "name": "Get Journey", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/checklist/journey", "host": ["localhost"], "port": "5001", "path": ["api", "checklist", "journey"] } } },
+        { "name": "Get Progress", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/checklist/progress", "host": ["localhost"], "port": "5001", "path": ["api", "checklist", "progress"] } } },
+        { "name": "Toggle Checklist Item", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/checklist/:itemId", "host": ["localhost"], "port": "5001", "path": ["api", "checklist", ":itemId"], "variable": [{ "key": "itemId", "value": "" }] } } },
+        { "name": "Create Section", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/checklist/sections", "host": ["localhost"], "port": "5001", "path": ["api", "checklist", "sections"] } } },
+        { "name": "Create Checklist Item", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/checklist/items", "host": ["localhost"], "port": "5001", "path": ["api", "checklist", "items"] } } }
+      ]
+    },
+    {
+      "name": "Budget",
+      "item": [
+        { "name": "Get Budget Estimate", "request": { "method": "POST", "header": [], "url": { "raw": "http://localhost:5001/api/budget", "host": ["localhost"], "port": "5001", "path": ["api", "budget"] } } }
+      ]
+    },
+    {
+      "name": "Map",
+      "item": [
+        { "name": "Get Map Markers", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/map/markers", "host": ["localhost"], "port": "5001", "path": ["api", "map", "markers"] } } },
+        { "name": "Get Heatmap Data", "request": { "method": "GET", "header": [], "url": { "raw": "http://localhost:5001/api/map/heatmap", "host": ["localhost"], "port": "5001", "path": ["api", "map", "heatmap"] } } }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        { "name": "Create Area", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/areas", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "areas"] } } },
+        { "name": "Update Area", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/areas/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "areas", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Area", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/areas/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "areas", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Create Lodge", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/lodges", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "lodges"] } } },
+        { "name": "Update Lodge", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/lodges/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "lodges", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Lodge", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/lodges/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "lodges", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Create Cultural Content", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/culture", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "culture"] } } },
+        { "name": "Update Cultural Content", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/culture/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "culture", ":id"], "variable": [{ "key": "id", "value": "" }] } } },
+        { "name": "Delete Cultural Content", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "http://localhost:5001/api/admin/culture/:id", "host": ["localhost"], "port": "5001", "path": ["api", "admin", "culture", ":id"], "variable": [{ "key": "id", "value": "" }] } } }
+      ]
+    }
+  ]
+}
