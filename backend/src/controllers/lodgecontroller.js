@@ -33,16 +33,20 @@ export const getLodgeById = async (req, res, next) => {
 // @route   POST /api/lodges
 export const createLodge = async (req, res, next) => {
   try {
-    const { location, ...rest } = req.body;
-    const lodgeData = { ...rest };
-    if (location && location.coordinates) {
-      lodgeData.location = {
-        type: 'Point',
-        coordinates: location.coordinates,
-      };
-    }
-    const lodge = await Lodge.create(lodgeData);
-    res.status(201).json(lodge);
+
+    const data = Array.isArray(req.body) ? req.body : [req.body];
+
+    const lodges = await Lodge.insertMany(
+      data.map(({ location, ...rest }) => {
+        const doc = { ...rest };
+        if (location?.coordinates?.length === 2) {
+          doc.location = { type: 'Point', coordinates: location.coordinates };
+        }
+        return doc;
+      })
+    );
+    res.status(201).json(lodges.length === 1 ? lodges[0] : lodges)
+
   } catch (error) {
     next(error);
   }
