@@ -32,18 +32,21 @@ export const getAreaById = async (req, res, next) => {
 // @route   POST /api/areas
 export const createArea = async (req, res, next) => {
   try {
-    const { location, ...rest } = req.body;
-    const areaData = { ...rest };
-    if (location && location.coordinates) {
-      areaData.location = {
-        type: 'Point',
-        coordinates: location.coordinates,
-      };
-    }
-    const area = await Area.create(areaData);
-    res.status(201).json(area);
-  } catch (error) {
-    next(error);
+    const data = Array.isArray(req.body) ? req.body : [req.body];
+
+    const areas = await Area.insertMany(
+      data.map(({ location, ...rest }) => ({
+        ...rest,
+        ...(location?.coordinates && {
+          location: { type: 'Point', coordinates: location.coordinates }
+        })
+      }))
+    )
+
+    res.status(201).json(areas.length === 1 ? areas[0] : areassa);
+
+  } catch(error) {
+    next(error)
   }
 };
 

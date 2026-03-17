@@ -1,5 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+dotenv.config({ path: join(__dirname, '../.env') });
 import cors from 'cors';
 import helmet from 'helmet';
 import connectDB from './config/db.js';
@@ -15,15 +21,20 @@ import negotiationRoutes from './routes/negotiationRoutes.js';
 import mapRoutes from './routes/mapRoutes.js';          // NEW
 import adminRoutes from './routes/adminRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import cookieParser from 'cookie-parser'
+import { generalLimiter } from './middleware/rateLimitMiddleware.js';
 
-dotenv.config();
+
+
 connectDB();
 
 const app = express();
 
 // Security
 app.use(helmet());
-
+app.use(cookieParser())
+// Rate Limiting
+app.use(generalLimiter)
 // CORS
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5500';
 app.use(cors({

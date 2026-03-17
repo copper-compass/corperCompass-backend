@@ -1,4 +1,4 @@
-import { calculateBudget } from '../src/services/budgetService.js';
+import { calculateBudget } from '../backend/src/services/budgetService.js';
 
 describe('Budget Calculator', () => {
   test('calculates total and buffer correctly', () => {

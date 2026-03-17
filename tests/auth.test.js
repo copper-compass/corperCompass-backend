@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../src/app.js';
-import User from '../src/models/User.js';
+import app from '../backend/src/app.js';
+import User from '../backend/src/models/User.js';
 import mongoose from 'mongoose';
 
 describe('Auth Endpoints', () => {
@@ -26,7 +26,7 @@ describe('Auth Endpoints', () => {
         password: 'password123',
       });
     expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('token');
+    expect(res.headers['set-cookie']).toBeDefined();
     expect(res.body.email).toBe('test@example.com');
   });
 
@@ -48,6 +48,6 @@ describe('Auth Endpoints', () => {
         password: 'password123',
       });
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('token');
+    expect(res.headers['set-cookie']).toBeDefined();
   });
 });

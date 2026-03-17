@@ -1,5 +1,13 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import argon2 from 'argon2';
+
+const hashOptions = {
+  type: argon2.argon2id,
+  memoryCost: 2 ** 16, //64mb
+  parallelism: 4,
+  timeCost: 3,
+
+}
 
 const userSchema = new mongoose.Schema(
   {
@@ -30,16 +38,14 @@ const userSchema = new mongoose.Schema(
 );
 
 // Hash password before saving
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   if (!this.isModified('password')) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  this.password = await argon2.hash(this.password, hashOptions);
 });
 
 // Compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return await argon2.verify(this.password, enteredPassword);
 };
 
 const User = mongoose.model('User', userSchema);
