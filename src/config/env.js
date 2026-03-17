@@ -1,4 +1,1 @@
-PORT=5001
-MONGO_URI=mongodb://localhost:27017/corpercompass
-JWT_SECRET=your_jwt_secret_here_change_in_production
-NODE_ENV=development
+
