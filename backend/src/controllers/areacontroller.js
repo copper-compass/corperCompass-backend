@@ -43,7 +43,7 @@ export const createArea = async (req, res, next) => {
       }))
     )
 
-    res.status(201).json(areas.length === 1 ? areas[0] : areassa);
+    res.status(201).json(areas.length === 1 ? areas[0] : areas);
 
   } catch(error) {
     next(error)

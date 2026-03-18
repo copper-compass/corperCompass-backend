@@ -34,8 +34,10 @@ export const getCulturalContentById = async (req, res, next) => {
 // @route   POST /api/culture
 export const createCulturalContent = async (req, res, next) => {
   try {
-    const content = await CulturalContent.create(req.body);
-    res.status(201).json(content);
+    const data = Array.isArray(req.body) ? req.body : [req.body];
+    
+    const contents = await CulturalContent.insertMany(data);
+    res.status(201).json(contents.length === 1 ? contents[0] : contents);
   } catch (error) {
     next(error);
   }

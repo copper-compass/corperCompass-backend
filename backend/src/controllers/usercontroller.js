@@ -20,7 +20,9 @@ export const updateProfile = async (req, res, next) => {
 // @route   GET /api/users/profile
 export const getProfile = async (req, res, next) => {
   try {
-    const profile = await Profile.findOne({ user: req.user._id }).populate('user', 'name email');
+    const currentUserID = req.user._id;
+    const profile = await Profile.findOne({ user: currentUserID }).populate('user', 'name email');
+    console.log('Fetched profile:', profile);
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
