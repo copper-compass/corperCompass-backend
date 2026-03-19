@@ -94,11 +94,11 @@ Use `docker-compose up -d` from the parent directory containing both repositorie
 - **Node.js** + **Express.js** – RESTful API
 - **MongoDB** + **Mongoose ODM** – Database
 - **JSON Web Tokens (JWT)** – Authentication
-- **bcrypt** – Password hashing
+- **Argon2** – Password hashing
 - **express-validator** – Input validation
 - **helmet**, **cors** – Security middleware
 - **jest** + **supertest** – Testing
--JWT, bcrypt, Helmet, express-rate-limit, express-mongo-sanitize,cookie-parser
+-JWT, Argon2, Helmet, express-rate-limit, express-mongo-sanitize,cookie-parser
   
     
 ## Security
@@ -214,8 +214,8 @@ Environment Variables
 Backend (.env)
 
 ```
-PORT=5000
-MONGODB_URI=mongodb://localhost:5000/corpercompass
+PORT=5001
+MONGODB_URI=mongodb://localhost:5001/corpercompass
 JWT_SECRET=your_super_secret_key_change_me
 NODE_ENV=development
 ```
@@ -223,7 +223,7 @@ NODE_ENV=development
 Frontend (.env)
 
 ```
-VITE_API_URL=http://localhost:5173/api
+URL=http://localhost:5500/api
 ```
 
 Database Seeding (Optional)
