@@ -1,14 +1,8 @@
 import mongoose from 'mongoose';
 
 const journeySectionSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  order: {
-    type: Number,
-    required: true,
-  },
+  title: { type: String, required: true },
+  order: { type: Number, required: true },
 });
 
 const JourneySection = mongoose.model('JourneySection', journeySectionSchema);
