@@ -13,6 +13,10 @@ export const getAreas = async (req, res, next) => {
 
 export const getAreaById = async (req, res, next) => {
   try {
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400);
+      throw new Error('Invalid area ID format');
+    }
     const area = await Area.findById(req.params.id);
     if (!area) {
       res.status(404);
