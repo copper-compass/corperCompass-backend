@@ -119,6 +119,23 @@ corpercompass-backend/
 ├── src/
 │   ├── config/
 │   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── userController.js
+│   │   ├── areaController.js
+│   │   ├── lodgeController.js
+│   │   ├── checklistController.js
+│   │   ├── cultureController.js
+│   │   ├── budgetController.js
+│   │   ├── messageController.js
+│   │   ├── negotiationController.js
+│   │   ├── mapController.js
+│   │   └── adminController.js
+│   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── adminMiddleware.js
+│   │   ├── validationMiddleware.js
+│   │   └── errorHandler.js
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Profile.js
@@ -132,21 +149,6 @@ corpercompass-backend/
 │   │   ├── Message.js
 │   │   ├── Negotiation.js
 │   │   └── Payment.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── userController.js
-│   │   ├── areaController.js
-│   │   ├── lodgeController.js
-│   │   ├── checklistController.js
-│   │   ├── cultureController.js
-│   │   ├── budgetController.js
-│   │   ├── messageController.js
-│   │   ├── negotiationController.js
-│   │   ├── mapController.js          <-- NEW
-│   │   └── adminController.js
-│   ├── services/
-│   │   ├── budgetService.js
-│   │   └── paymentService.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── userRoutes.js
@@ -157,13 +159,11 @@ corpercompass-backend/
 │   │   ├── budgetRoutes.js
 │   │   ├── messageRoutes.js
 │   │   ├── negotiationRoutes.js
-│   │   ├── mapRoutes.js              <-- NEW
+│   │   ├── mapRoutes.js
 │   │   └── adminRoutes.js
-│   ├── middleware/
-│   │   ├── authMiddleware.js
-│   │   ├── adminMiddleware.js
-│   │   ├── validationMiddleware.js
-│   │   └── errorHandler.js
+│   ├── services/
+│   │   ├── budgetService.js
+│   │   └── paymentService.js
 │   ├── utils/
 │   │   └── generateToken.js
 │   ├── app.js
@@ -172,8 +172,10 @@ corpercompass-backend/
 │   ├── budget.test.js
 │   └── auth.test.js
 ├── .env
+├── .gitignore
 ├── package.json
-└── Dockerfile
+├── Dockerfile
+└── README.md
 
 ## 🚀 Getting Started
 
