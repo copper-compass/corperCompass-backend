@@ -1,19 +1,13 @@
 import Message from '../models/Message.js';
 
-// @desc    Send a message
-// @route   POST /api/messages
 export const sendMessage = async (req, res, next) => {
   try {
     const { receiver, content } = req.body;
     if (!receiver || !content) {
       res.status(400);
       throw new Error('Receiver and content are required');
-    } 
-    const message = await Message.create({
-      sender: req.user._id,
-      receiver,
-      content,
-    });
+    }
+    const message = await Message.create({ sender: req.user._id, receiver, content });
     const populated = await Message.findById(message._id).populate('sender receiver', 'name email');
     res.status(201).json(populated);
   } catch (error) {
@@ -21,8 +15,6 @@ export const sendMessage = async (req, res, next) => {
   }
 };
 
-// @desc    Get messages for the logged-in user (sent or received)
-// @route   GET /api/messages
 export const getMyMessages = async (req, res, next) => {
   try {
     const messages = await Message.find({
@@ -36,8 +28,6 @@ export const getMyMessages = async (req, res, next) => {
   }
 };
 
-// @desc    Get conversation with a specific user
-// @route   GET /api/messages/conversation/:userId
 export const getConversation = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -55,8 +45,6 @@ export const getConversation = async (req, res, next) => {
   }
 };
 
-// @desc    Mark a message as read
-// @route   PATCH /api/messages/:id/read
 export const markAsRead = async (req, res, next) => {
   try {
     const message = await Message.findById(req.params.id);
@@ -66,7 +54,7 @@ export const markAsRead = async (req, res, next) => {
     }
     if (message.receiver.toString() !== req.user._id.toString()) {
       res.status(403);
-      throw new Error('Not authorized to mark this message as read');
+      throw new Error('Not authorized');
     }
     message.read = true;
     await message.save();
