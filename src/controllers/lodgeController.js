@@ -4,7 +4,15 @@ export const getLodges = async (req, res, next) => {
   try {
     const { area } = req.query;
     const filter = { isActive: true };
-    if (area) filter.area = area;
+    
+    if (area) {
+      if (!area.match(/^[0-9a-fA-F]{24}$/)) {
+        res.status(400);
+        throw new Error('Invalid area ID format in query parameter');
+      }
+      filter.area = area;
+    }
+    
     const lodges = await Lodge.find(filter).populate('area', 'name state');
     res.json(lodges);
   } catch (error) {
@@ -61,12 +69,18 @@ export const updateLodge = async (req, res, next) => {
 
 export const deleteLodge = async (req, res, next) => {
   try {
-    const lodge = await Lodge.findByIdAndDelete(req.params.id);
+    const lodge = await Lodge.findByIdAndUpdate(
+      req.params.id, 
+      { isActive: false }, 
+      { new: true }
+    );
+    
     if (!lodge) {
       res.status(404);
       throw new Error('Lodge not found');
     }
-    res.json({ message: 'Lodge removed' });
+    
+    res.json({ message: 'Lodge successfully archived' });
   } catch (error) {
     next(error);
   }
