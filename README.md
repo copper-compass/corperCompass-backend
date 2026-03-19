@@ -246,7 +246,7 @@ cd backend
 npm run dev   # uses nodemon for auto-restart
 ```
 
-API will be available at http://localhost:5000/api
+API will be available at http://localhost:5001/api
 
 Start Frontend Development Server
 
@@ -255,7 +255,7 @@ cd frontend
 npm run dev
 ```
 
-App will open at http://localhost:5173
+App will open at http://localhost:5500
 
 ---
 
