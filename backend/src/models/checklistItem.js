@@ -1,15 +1,8 @@
 import mongoose from 'mongoose';
 
 const checklistItemSchema = new mongoose.Schema({
-  section: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'JourneySection',
-    required: true,
-  },
-  text: {
-    type: String,
-    required: true,
-  },
+  section: { type: mongoose.Schema.Types.ObjectId, ref: 'JourneySection', required: true },
+  text: { type: String, required: true },
   order: Number,
 });
 
