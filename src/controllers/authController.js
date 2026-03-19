@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Profile from '../models/Profile.js';
 import generateToken from '../utils/generateToken.js';
 
 export const registerUser = async (req, res, next) => {
@@ -10,6 +11,7 @@ export const registerUser = async (req, res, next) => {
       throw new Error('User already exists');
     }
     const user = await User.create({ name, email, password });
+    const profile = await Profile.create({ user: user._id });
     res.status(201).json({
       _id: user._id,
       name: user.name,
