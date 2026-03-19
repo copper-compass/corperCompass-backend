@@ -1,7 +1,5 @@
 import Area from '../models/Area.js';
 
-// @desc    Get all areas (optionally filter by state)
-// @route   GET /api/areas
 export const getAreas = async (req, res, next) => {
   try {
     const { state } = req.query;
@@ -13,8 +11,6 @@ export const getAreas = async (req, res, next) => {
   }
 };
 
-// @desc    Get single area by id
-// @route   GET /api/areas/:id
 export const getAreaById = async (req, res, next) => {
   try {
     const area = await Area.findById(req.params.id);
@@ -28,39 +24,26 @@ export const getAreaById = async (req, res, next) => {
   }
 };
 
-// @desc    Create an area (admin)
-// @route   POST /api/areas
 export const createArea = async (req, res, next) => {
   try {
-    const data = Array.isArray(req.body) ? req.body : [req.body];
-
-    const areas = await Area.insertMany(
-      data.map(({ location, ...rest }) => ({
-        ...rest,
-        ...(location?.coordinates && {
-          location: { type: 'Point', coordinates: location.coordinates }
-        })
-      }))
-    )
-
-    res.status(201).json(areas.length === 1 ? areas[0] : areas);
-
-  } catch(error) {
-    next(error)
+    const { location, ...rest } = req.body;
+    const areaData = { ...rest };
+    if (location?.coordinates) {
+      areaData.location = { type: 'Point', coordinates: location.coordinates };
+    }
+    const area = await Area.create(areaData);
+    res.status(201).json(area);
+  } catch (error) {
+    next(error);
   }
 };
 
-// @desc    Update an area (admin)
-// @route   PUT /api/areas/:id
 export const updateArea = async (req, res, next) => {
   try {
     const { location, ...rest } = req.body;
     const updateData = { ...rest };
-    if (location && location.coordinates) {
-      updateData.location = {
-        type: 'Point',
-        coordinates: location.coordinates,
-      };
+    if (location?.coordinates) {
+      updateData.location = { type: 'Point', coordinates: location.coordinates };
     } else if (location === null) {
       updateData.location = null;
     }
@@ -75,8 +58,6 @@ export const updateArea = async (req, res, next) => {
   }
 };
 
-// @desc    Delete an area (admin)
-// @route   DELETE /api/areas/:id
 export const deleteArea = async (req, res, next) => {
   try {
     const area = await Area.findByIdAndDelete(req.params.id);
