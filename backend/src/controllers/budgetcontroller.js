@@ -1,12 +1,12 @@
 import { calculateBudget } from '../services/budgetService.js';
 
-// @desc    Calculate relocation budget
-// @route   POST /api/budget
 export const getBudgetEstimate = (req, res, next) => {
   try {
     const { rent, feeding, transport, miscellaneous } = req.body;
-    // Validate inputs
-    if ([rent, feeding, transport, miscellaneous].some(val => val !== undefined && typeof val !== 'number')) {
+    const invalid = [rent, feeding, transport, miscellaneous].some(
+      val => val !== undefined && typeof val !== 'number'
+    );
+    if (invalid) {
       res.status(400);
       throw new Error('All inputs must be numbers');
     }
