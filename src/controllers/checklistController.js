@@ -30,6 +30,11 @@ export const getProgress = async (req, res, next) => {
 export const toggleChecklistItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
+
+    if (!itemId.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400);
+      throw new Error('Invalid checklist item ID format');
+    }
     const { completed } = req.body;
     let progress = await UserChecklistProgress.findOne({ user: req.user._id, checklistItem: itemId });
     if (progress) {
