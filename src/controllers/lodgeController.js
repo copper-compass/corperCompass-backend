@@ -2,8 +2,8 @@ import Lodge from '../models/Lodge.js';
 
 export const getLodges = async (req, res, next) => {
   try {
-    const { area } = req.query;
-    const filter = { isActive: true };
+    const { area, maxPrice } = req.query;
+    const filter = { isDeleted: false };
     
     if (area) {
       if (!area.match(/^[0-9a-fA-F]{24}$/)) {
@@ -11,6 +11,10 @@ export const getLodges = async (req, res, next) => {
         throw new Error('Invalid area ID format in query parameter');
       }
       filter.area = area;
+    }
+
+    if (maxPrice) {
+      filter.price = { $lte: Number(maxPrice) };
     }
     
     const lodges = await Lodge.find(filter).populate('area', 'name state');
@@ -22,7 +26,14 @@ export const getLodges = async (req, res, next) => {
 
 export const getLodgeById = async (req, res, next) => {
   try {
-    const lodge = await Lodge.findById(req.params.id).populate('area', 'name state');
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400);
+      throw new Error('Invalid lodge ID format');
+    }
+    const lodge = await Lodge.findOne({ 
+      _id: req.params.id, 
+      isDeleted: false 
+    }).populate('area', 'name state');
     if (!lodge) {
       res.status(404);
       throw new Error('Lodge not found');
@@ -49,6 +60,10 @@ export const createLodge = async (req, res, next) => {
 
 export const updateLodge = async (req, res, next) => {
   try {
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400);
+      throw new Error('Invalid lodge ID format');
+    }
     const { location, ...rest } = req.body;
     const updateData = { ...rest };
     if (location?.coordinates) {
@@ -56,7 +71,11 @@ export const updateLodge = async (req, res, next) => {
     } else if (location === null) {
       updateData.location = null;
     }
-    const lodge = await Lodge.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
+    const lodge = await Lodge.findByIdAndUpdate(
+      req.params.id, 
+      updateData, 
+      { new: true, runValidators: true }
+    );
     if (!lodge) {
       res.status(404);
       throw new Error('Lodge not found');
@@ -69,17 +88,19 @@ export const updateLodge = async (req, res, next) => {
 
 export const deleteLodge = async (req, res, next) => {
   try {
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      res.status(400);
+      throw new Error('Invalid lodge ID format');
+    }
     const lodge = await Lodge.findByIdAndUpdate(
-      req.params.id, 
-      { isActive: false }, 
+      req.params.id,
+      { isDeleted: true },
       { new: true }
     );
-    
     if (!lodge) {
       res.status(404);
       throw new Error('Lodge not found');
     }
-    
     res.json({ message: 'Lodge successfully archived' });
   } catch (error) {
     next(error);
