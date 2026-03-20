@@ -5,9 +5,13 @@ export const getMapMarkers = async (req, res, next) => {
   try {
     const areas = await Area.find({ 'location.coordinates': { $exists: true, $ne: [] } })
       .select('name state location rentRange');
-    const lodges = await Lodge.find({ 'location.coordinates': { $exists: true, $ne: [] } })
+
+    const lodges = await Lodge.find({ 
+      'location.coordinates': { $exists: true, $ne: [] },
+      isDeleted: false
+    })
       .populate('area', 'name state')
-      .select('name area location priceRange');
+      .select('name area location price');
 
     const markers = [
       ...areas.map(area => ({
@@ -25,12 +29,11 @@ export const getMapMarkers = async (req, res, next) => {
         name: lodge.name,
         area: lodge.area?.name,
         state: lodge.area?.state,
-        priceRange: lodge.priceRange,
+        price: lodge.price,
         lat: lodge.location.coordinates[1],
         lng: lodge.location.coordinates[0],
       })),
     ];
-
     res.json(markers);
   } catch (error) {
     next(error);
@@ -39,19 +42,18 @@ export const getMapMarkers = async (req, res, next) => {
 
 export const getHeatmapData = async (req, res, next) => {
   try {
-    const lodges = await Lodge.find({ 'location.coordinates': { $exists: true, $ne: [] } })
-      .populate('area')
-      .select('location priceRange area');
-    const heatmapPoints = lodges.map(lodge => {
-      const avgRent = lodge.priceRange?.min && lodge.priceRange?.max
-        ? (lodge.priceRange.min + lodge.priceRange.max) / 2
-        : 50000;
-      return {
-        lat: lodge.location.coordinates[1],
-        lng: lodge.location.coordinates[0],
-        weight: avgRent / 1000,
-      };
-    });
+    const lodges = await Lodge.find({ 
+      'location.coordinates': { $exists: true, $ne: [] },
+      isDeleted: false
+    })
+      .select('location price');
+
+    const heatmapPoints = lodges.map(lodge => ({
+      lat: lodge.location.coordinates[1],
+      lng: lodge.location.coordinates[0],
+      weight: lodge.price ? lodge.price / 1000 : 50,
+    }));
+
     res.json(heatmapPoints);
   } catch (error) {
     next(error);
