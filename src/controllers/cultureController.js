@@ -1,5 +1,12 @@
 import CulturalContent from '../models/CulturalContent.js';
 
+const validateId = (id, res) => {
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    res.status(400);
+    throw new Error('Invalid content ID format');
+  }
+};
+
 export const getCulturalContent = async (req, res, next) => {
   try {
     const { category, state } = req.query;
@@ -15,6 +22,7 @@ export const getCulturalContent = async (req, res, next) => {
 
 export const getCulturalContentById = async (req, res, next) => {
   try {
+    validateId(req.params.id, res);
     const content = await CulturalContent.findById(req.params.id);
     if (!content) {
       res.status(404);
@@ -37,6 +45,7 @@ export const createCulturalContent = async (req, res, next) => {
 
 export const updateCulturalContent = async (req, res, next) => {
   try {
+    validateId(req.params.id, res);
     const content = await CulturalContent.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!content) {
       res.status(404);
@@ -50,6 +59,7 @@ export const updateCulturalContent = async (req, res, next) => {
 
 export const deleteCulturalContent = async (req, res, next) => {
   try {
+    validateId(req.params.id, res);
     const content = await CulturalContent.findByIdAndDelete(req.params.id);
     if (!content) {
       res.status(404);
