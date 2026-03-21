@@ -1,0 +1,1110 @@
+{
+  "info": {
+    "_postman_id": "3e5aabb3-842d-4950-8758-f5a244b49e91",
+    "name": "CorperCompass API",
+    "description": "Complete API for CorperCompass relocation platform. Includes authentication, areas, lodges, checklist, cultural content, budget estimator, map markers, messaging, and negotiations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51073120",
+    "_collection_link": "https://go.postman.co/collection/51073120-3e5aabb3-842d-4950-8758-f5a244b49e91?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Richard Ilori\",\n  \"email\": \"richardilori@test.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Creates a new user account in the CorperCompass system.  \nNew users are assigned the \"user\" role by default.  \nA profile document is automatically created alongside  \nthe user account.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nRequest Body:\n\n- name (string, required) - Full name of the user  \n    Example: \"Richard Ilori\"\n    \n- email (string, required) - Valid email address  \n    Example: \"[richard@test.com](https://mailto:richard@test.com)\"\n    \n- password (string, required) - Minimum 6 characters  \n    Example: \"password123\"\n    \n\nSuccess Response (201):\n\n- _id - MongoDB generated user ID\n    \n- name - User's full name\n    \n- email - User's email address\n    \n- role - Default is \"user\"\n    \n- Sets JWT token in HTTP-only cookie\n    \n\nError Responses:\n\n- 400 - User already exists\n    \n- 400 - Invalid user data\n    \n- invalid email format, password too short)"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "if (res.token) {\r",
+                  "    pm.environment.set(\"token\", res.token);\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"richard@test.com\",\n  \"password\": \"password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Authenticates an existing user and returns a JWT token.  \nThe token is required to access all protected endpoints.  \nStore the token and include it as a Bearer token in the  \nAuthorization header for subsequent requests.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nRequest Body:\n\n- email (string, required) - Registered email address  \n    Example: \"[richard@test.com](https://mailto:richard@test.com)\"\n    \n- password (string, required) - User's password  \n    Example: \"password123\"\n    \n\nSuccess Response (200):\n\n- _id - User's MongoDB ID\n    \n- name - User's full name\n    \n- email - User's email address\n    \n- role - \"user\" or \"admin\"\n    \n- token - JWT token for authenticating future requests\n    \n- Sets JWT token in HTTP-only cookie\n    \n\nError Responses:\n\n- 400 - Missing email or password\n    \n- 400 - Invalid email format\n    \n- 401 - Invalid email or password"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Returns the account details of the currently  \nauthenticated user. Use this to verify a valid  \nsession or retrieve basic user information without  \nexposing sensitive data like passwords.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Add token to Authorization header as Bearer token\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- _id - User's MongoDB ID\n    \n- name - User's full name\n    \n- email - User's email address\n    \n- role - \"user\" or \"admin\"\n    \n- createdAt - Account creation timestamp\n    \n- updatedAt - Last update timestamp\n    \n\nError Responses:\n\n- 401 - Not authorized, no token\n    \n- 401 - Not authorized, token failed"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            },
+            "description": "Returns the relocation profile of the currently  \nauthenticated user. The profile contains NYSC-specific  \ninformation like posted state, phone number and  \npreferences. A profile is automatically created when  \na user registers.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Add token to Authorization header as Bearer token\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- _id - Profile MongoDB ID\n    \n- user - Reference to the User ID\n    \n- postedState - NYSC posted state e.g. \"Enugu\"\n    \n- phone - User's phone number\n    \n- preferences - User preferences object  \n    e.g. { \"budget\": \"low\" }\n    \n- createdAt - Profile creation timestamp\n    \n- updatedAt - Last update timestamp\n    \n\nError Responses:\n\n- 401 - Not authorized, no token\n    \n- 404 - Profile not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"postedState\": \"Enugu\",\n    \"phone\": \"08087654321\",\n    \"preferences\": {\n        \"budget\": \"low\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            },
+            "description": "Updates the relocation profile of the currently  \nauthenticated user. Use this to set your NYSC posted  \nstate, contact number and budget preferences.  \nAll fields are optional — only include what you want  \nto update.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Add token to Authorization header as Bearer token\n    \n\nRequest Body (all fields optional):\n\n- postedState (string) - NYSC posted state  \n    Example: \"Enugu\"\n    \n- phone (string) - Contact phone number  \n    Example: \"08087654321\"\n    \n- preferences (object) - Budget and other preferences  \n    Example: { \"budget\": \"low\" }\n    \n\nSuccess Response (200):\n\n- Returns the fully updated profile document\n    \n\nError Responses:\n\n- 401 - Not authorized, no token\n    \n- 404 - Profile not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Areas",
+      "item": [
+        {
+          "name": "Get All Areas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/areas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "areas"
+              ]
+            },
+            "description": "Returns a list of all areas in the CorperCompass database.  \nAreas contain location intelligence including safety ratings,  \nrent estimates, and lifestyle notes to help corpers make  \ninformed relocation decisions.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nQuery Parameters (optional):\n\n- state (string) - Filter by state name  \n    Example: /api/areas?state=Enugu\n    \n\nSuccess Response (200):\n\n- Returns array of area documents\n    \n- Each area contains name, state, safety info, rent range\n    \n- Returns empty array \\[\\] if no areas exist yet\n    \n\nError Responses:\n\n- 500 - Server error"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Area by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/areas/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "areas",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            },
+            "description": "Returns a single area by its MongoDB ID.  \nUse this to get detailed information about a  \nspecific area including safety ratings, rent range,  \nand lifestyle notes.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId  \n    Example: 69bb3cef9d88c4178257716f\n    \n\nSuccess Response (200):\n\n- Returns the full area document\n    \n\nError Responses:\n\n- 400 - Invalid area ID format\n    \n- 404 - Area not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Area (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"GRA\",\n    \"state\": \"Enugu\",\n    \"rentRange\": {\n        \"min\": 150000,\n        \"max\": 400000\n    },\n    \"transportNotes\": \"Tricycles and buses available\",\n    \"safetyNotes\": \"One of the safest areas in Enugu\",\n    \"lifestyleNotes\": \"Quiet residential area, close to government offices\",\n    \"location\": {\n        \"coordinates\": [7.4951, 6.4414]\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/areas",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "areas"
+              ]
+            },
+            "description": "Creates a new area. Admin access required.  \nAreas provide location intelligence for corpers  \nincluding rent ranges, transport and safety notes.  \nOnly create areas for the 3 pilot states:  \nEnugu, Oyo and Kaduna.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nRequest Body:\n\n- name (string, required) - Area name e.g. \"GRA\"\n    \n- state (string, required) - Pilot state only  \n    e.g. \"Enugu\", \"Oyo\", \"Kaduna\"\n    \n- rentRange (object) - Min and max monthly rent  \n    e.g. { \"min\": 150000, \"max\": 400000 }\n    \n- transportNotes (string) - Transport information\n    \n- safetyNotes (string) - Safety information\n    \n- lifestyleNotes (string) - Lifestyle information\n    \n- location.coordinates (array) - \\[longitude, latitude\\]\n    \n\nSuccess Response (201):\n\n- Returns the created area document\n    \n\nError Responses:\n\n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Area (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"safetyNotes\": \"Very safe area, popular with corpers\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/areas/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "areas",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bc72b97cda0b31c039b4b8"
+                }
+              ]
+            },
+            "description": "Updates an existing area by its MongoDB ID.  \nAdmin access required. Only include the fields  \nyou want to update — all fields are optional.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId  \n    of the area to update\n    \n\nRequest Body (all fields optional):\n\n- name (string) - Area name\n    \n- state (string) - Pilot state\n    \n- rentRange (object) - { \"min\": number, \"max\": number }\n    \n- transportNotes (string) - Transport information\n    \n- safetyNotes (string) - Safety information\n    \n- lifestyleNotes (string) - Lifestyle information\n    \n- location.coordinates (array) - \\[longitude, latitude\\]\n    \n\nSuccess Response (200):\n\n- Returns the fully updated area document\n    \n\nError Responses:\n\n- 400 - Invalid area ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin\n    \n- 404 - Area not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Area (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/areas/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "areas",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bc6d6c7cda0b31c039b4b1"
+                }
+              ]
+            },
+            "description": "Permanently deletes an area by its MongoDB ID.  \nAdmin access required.  \nNote: This is a hard delete — the area is completely  \nremoved from the database and cannot be recovered.  \nCompare with Lodge deletion which uses soft delete.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId  \n    of the area to delete\n    \n\nRequest Body:\n\n- None\n    \n\nSuccess Response (200):\n\n- { \"message\": \"Area removed\" }\n    \n\nError Responses:\n\n- 400 - Invalid area ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin\n    \n- 404 - Area not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Lodges",
+      "item": [
+        {
+          "name": "Get All Lodges",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lodges",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lodges"
+              ],
+              "query": [
+                {
+                  "key": "area",
+                  "value": "areaId",
+                  "description": "Optional area ID filter",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Retrieves a list of all active lodges in the directory.  \nBy default, it returns all lodges. You can optionally filter by a specific Area ID.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nQuery Parameters (optional):\n\n- area (string) - Filter lodges by a valid Area MongoDB ObjectId  \n    Example: /api/lodges?area=69bc78c85c88be8e531110c3\n    \n\nSuccess Response (200):\n\n- Returns an array of active lodge documents\n    \n- Automatically populates the 'area' field with the area's name and state\n    \n- Only returns lodges where isActive is true\n    \n- Returns an empty array \\[\\] if no lodges exist yet\n    \n\nError Responses:\n\n- 400 - Invalid area ID format in query parameter"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lodge by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lodges/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lodges",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bc7a2caf6128a6699b1dc9"
+                }
+              ]
+            },
+            "description": "Retrieves the details of a single lodge by its MongoDB ID.  \nIncludes populated Area data (name and state).\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId of the lodge  \n    Example: \"69bc7a2caf6128a6699b1dc9\"\n    \n\nSuccess Response (200):\n\n- Returns the full lodge document\n    \n- Automatically populates the 'area' field\n    \n\nError Responses:\n\n- 400 - Invalid lodge ID format\n    \n- 404 - Lodge not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Lodge (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Sunshine Lodge 2\",\r\n    \"area\": \"69bc72b97cda0b31c039b4b8\",\r\n    \"price\": 45000,\r\n    \"roomType\": \"self-contain\",\r\n    \"amenities\": [\"water\", \"electricity\", \"security\"],\r\n    \"publicContact\": \"08012345678\",\r\n    \"notes\": \"Close to market\",\r\n    \"distanceFromPPA\": \"10 mins drive from NYSC camp\",\r\n    \"location\": {\r\n        \"coordinates\": [7.4951, 6.4414]\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/lodges",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lodges"
+              ]
+            },
+            "description": "Creates a new lodge in the directory. Admin access required.  \nLodges must be linked to a valid Area ID.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nRequest Body:\n\n- name (string, required) - Name of the lodge  \n    Example: \"Sunshine Lodge\"\n    \n- area (string, required) - Valid MongoDB ObjectId of the parent Area  \n    Example: \"69bc78c85c88be8e531110c3\"\n    \n- priceRange (object) - Min and max rent  \n    Example: { \"min\": 150000, \"max\": 250000 }\n    \n- publicContact (string) - Phone number for caretaker  \n    Example: \"08012345678\"\n    \n- notes (string) - Additional descriptions  \n    Example: \"Close to market\"\n    \n- location.coordinates (array) - \\[longitude, latitude\\]  \n    Example: \\[3.3792, 6.5244\\]\n    \n\nSuccess Response (201):\n\n- Returns the fully created lodge document\n    \n- Automatically sets isActive to true\n    \n\nError Responses:\n\n- 400 - Missing required fields or invalid Area ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Lodge (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"notes\": \"Close to market and bus stop\",\r\n    \"price\": 50000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/lodges/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lodges",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bcdbe8e7f44eb432475ce2"
+                }
+              ]
+            },
+            "description": "Updates an existing lodge by its MongoDB ID.  \nAdmin access required. Only include the fields  \nyou want to update — all fields are optional.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId  \n    of the lodge to update\n    \n\nRequest Body (all fields optional):\n\n- name (string) - Lodge name\n    \n- price (number) - Monthly rent price\n    \n- roomType (string) - \"self-contain\", \"room-and-parlour\",  \n    \"flat\" or \"duplex\"\n    \n- amenities (array) - List of amenities  \n    e.g. \\[\"water\", \"electricity\", \"security\"\\]\n    \n- publicContact (string) - Contact phone number\n    \n- notes (string) - Additional notes\n    \n- isActive (boolean) - Whether lodge is active\n    \n\nSuccess Response (200):\n\n- Returns the fully updated lodge document\n    \n\nError Responses:\n\n- 400 - Invalid lodge ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin\n    \n- 404 - Lodge not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Lodge (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lodges/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lodges",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bce47a24d36bc8469bc081"
+                }
+              ]
+            },
+            "description": "Soft deletes a lodge by setting isDeleted to true.  \nAdmin access required. The lodge remains in the  \ndatabase but is hidden from all public endpoints.  \nThis preserves data for accountability purposes.\n\nRequirements:\n\n- Must be logged in as Admin (Bearer token required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId\n    \n\nRequest Body:\n\n- None\n    \n\nSuccess Response (200):\n\n- { \"message\": \"Lodge successfully archived\" }\n    \n\nError Responses:\n\n- 400 - Invalid lodge ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized as admin\n    \n- 404 - Lodge not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Checklist",
+      "item": [
+        {
+          "name": "Get Journey Sections",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/checklist/journey",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "checklist",
+                "journey"
+              ]
+            },
+            "description": "Returns all journey sections and their checklist  \nitems to guide corpers through the relocation process.  \nSections include pre-arrival, arrival and settlement tasks.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns array of journey section documents\n    \n- Empty array \\[\\] if no sections seeded yet\n    \n\nError Responses:\n\n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Progress",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/checklist/progress",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "checklist",
+                "progress"
+              ]
+            },
+            "description": "Returns the authenticated user's checklist progress.  \nShows which tasks have been completed and which  \nare still pending.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns array of user checklist progress documents\n    \n- Empty array \\[\\] if no progress recorded yet\n    \n\nError Responses:\n\n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Checklist Item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"completed\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/checklist/:itemId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "checklist",
+                ":itemId"
+              ],
+              "variable": [
+                {
+                  "key": "itemId"
+                }
+              ]
+            },
+            "description": "Toggles the completion status of a checklist item  \nfor the authenticated user. If no progress record  \nexists it creates one. If it exists it updates it.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nPath Variables:\n\n- itemId (string, required) - Valid MongoDB ObjectId  \n    of the checklist item to toggle\n    \n\nRequest Body:\n\n- completed (boolean, required) - true or false  \n    Example: { \"completed\": true }\n    \n\nSuccess Response (200):\n\n- Returns the updated progress document with  \n    completedAt timestamp if completed is true\n    \n\nError Responses:\n\n- 400 - Invalid checklist item ID format\n    \n- 401 - Not authorized, no token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Culture",
+      "item": [
+        {
+          "name": "Get Cultural Content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/culture?category=Festivals&state=Lagos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "culture"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Festivals"
+                },
+                {
+                  "key": "state",
+                  "value": "Lagos"
+                }
+              ]
+            },
+            "description": "Returns cultural content filtered by category and state.  \nHelps corpers learn local traditions, language and customs.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nQuery Parameters (optional):\n\n- category (string) - Filter by category  \n    e.g. \"Festivals\", \"Language\", \"Food\"\n    \n- state (string) - Filter by pilot state  \n    e.g. \"Enugu\", \"Oyo\", \"Kaduna\"\n    \n\nSuccess Response (200):\n\n- Returns array of cultural content documents\n    \n- Empty array \\[\\] if no content seeded yet\n    \n\nError Responses:\n\n- 500 - Server error"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Content",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/culture/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "culture",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id"
+                }
+              ]
+            },
+            "description": "Returns a single cultural content document by ID.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId\n    \n\nSuccess Response (200):\n\n- Returns the full cultural content document\n    \n\nError Responses:\n\n- 400 - Invalid content ID format\n    \n- 404 - Content not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Budget",
+      "item": [
+        {
+          "name": "Calculate Budget",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rent\": 500000,\n    \"feeding\": 120000,\n    \"transport\": 50000,\n    \"miscellaneous\": 30000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/budget",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "budget"
+              ]
+            },
+            "description": "StartFragmentCalculates estimated monthly budget for a corper  \nincluding a 15% buffer for unexpected expenses.  \nTriggers a risk alert if total is below threshold.  \n  \nRequirements:  \n\\- Public endpoint (no authentication required)  \n  \nRequest Body:  \n\\- rent (number) - Monthly rent  \n\\- feeding (number) - Monthly feeding cost  \n\\- transport (number) - Monthly transport cost  \n\\- miscellaneous (number) - Other monthly expenses  \n  \nSuccess Response (200):  \n\\- total - Sum of all expenses  \n\\- buffer - 15% of total for emergencies  \n\\- recommendedBudget - total + buffer  \n\\- riskAlert - true if budget is dangerously low  \n  \nError Responses:  \n\\- 400 - Invalid input dataEndFragment"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Map",
+      "item": [
+        {
+          "name": "Get Map Markers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/map/markers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "map",
+                "markers"
+              ]
+            },
+            "description": "Returns all areas and active lodges with coordinates  \nfor display as markers on the interactive map.  \nSoft deleted lodges are excluded automatically.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns array of marker objects\n    \n- Each marker has type \"area\" or \"lodge\"\n    \n- Includes coordinates, name, state and price info\n    \n\nError Responses:\n\n- 500 - Server error"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Heatmap Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/map/heatmap",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "map",
+                "heatmap"
+              ]
+            },
+            "description": "Returns weighted coordinate points for generating  \na rent price heatmap overlay on the map.  \nHigher weight means higher rent in that area.  \nSoft deleted lodges are excluded automatically.\n\nRequirements:\n\n- Public endpoint (no authentication required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns array of { lat, lng, weight } objects\n    \n- Weight is derived from lodge price\n    \n\nError Responses:\n\n- 500 - Server error"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Get My Messages",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Retrieves a list of all conversations for the authenticated user.  \nSorted by most recent first.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns an array of message documents\n    \n- Automatically populates sender and receiver details (name, email)\n    \n- Returns empty array \\[\\] if no messages exist\n    \n\nError Responses:\n\n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"receiver\": \"69bb3cef9d88c4178257716f\",\n    \"content\": \"Hello, I'm interested in your lodge.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            },
+            "description": "Sends a new message to another user.  \nUsers cannot send messages to themselves.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- receiver (string, required) - Valid MongoDB ObjectId of the recipient  \n    Example: \"69bb3cef9d88c4178257716f\"\n    \n- content (string, required) - The message text  \n    Example: \"Is this lodge still available?\"\n    \n\nSuccess Response (201):\n\n- Returns the created message document\n    \n- Automatically populates sender and receiver details\n    \n\nError Responses:\n\n- 400 - Missing fields, invalid ID format, or attempting to message oneself\n    \n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/conversation/:userId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages",
+                "conversation",
+                ":userId"
+              ],
+              "variable": [
+                {
+                  "key": "userId"
+                }
+              ]
+            },
+            "description": "Retrieves the complete message history between the authenticated user and a specific user.  \nSorted chronologically (oldest to newest).\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nPath Variables:\n\n- userId (string, required) - Valid MongoDB ObjectId of the other user\n    \n\nSuccess Response (200):\n\n- Returns an array of message documents\n    \n- Returns empty array \\[\\] if no conversation exists yet\n    \n\nError Responses:\n\n- 400 - Invalid user ID format\n    \n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Message as Read",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/messages/:id/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "messages",
+                ":id",
+                "read"
+              ],
+              "variable": [
+                {
+                  "key": "id"
+                }
+              ]
+            },
+            "description": "Marks a specific message as read.  \nOnly the designated receiver of the message can mark it as read.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId of the message\n    \n\nSuccess Response (200):\n\n- Returns the updated message document with read: true\n    \n\nError Responses:\n\n- 400 - Invalid message ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized (user is not the receiver)\n    \n- 404 - Message not found"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Negotiations",
+      "item": [
+        {
+          "name": "Get My Negotiations",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/negotiations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "negotiations"
+              ]
+            },
+            "description": "Retrieves a list of all rent negotiations for the authenticated user.  \nSorted by the most recently updated.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- None (GET request)\n    \n\nSuccess Response (200):\n\n- Returns an array of negotiation documents\n    \n- Automatically populates the 'lodge' details (name, area, price)\n    \n- Returns an empty array \\[\\] if the user has no active negotiations\n    \n\nError Responses:\n\n- 401 - Not authorized, no token"
+          },
+          "response": []
+        },
+        {
+          "name": "Start Negotiation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"lodge\": \"69bce47a24d36bc8469bc081\",\n    \"proposedPrice\": 40000,\n    \"message\": \"I am a corper, please give me a discount.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/negotiations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "negotiations"
+              ]
+            },
+            "description": "Starts a new rent negotiation for a specific lodge.  \nCreates the initial offer and an optional first message.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n\nRequest Body:\n\n- lodge (string, required) - Valid MongoDB ObjectId of the lodge\n    \n- proposedPrice (number, required) - The initial rent offer\n    \n- message (string) - Optional first message to the landlord/admin\n    \n\nSuccess Response (201):\n\n- Returns the created negotiation document\n    \n- Status automatically defaults to \"pending\"\n    \n\nError Responses:\n\n- 400 - Missing required fields (lodge, proposedPrice)\n    \n- 401 - Not authorized, no token\n    \n- 404 - Lodge not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Negotiation by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/negotiations/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "negotiations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bcf7d6bb4fb122e693c76c"
+                }
+              ]
+            },
+            "description": "Retrieves the complete details of a single rent negotiation.  \nIncludes the full message history and populated lodge details.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Users can only view their own negotiations (unless Admin)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId of the negotiation\n    \n\nSuccess Response (200):\n\n- Returns the full negotiation document\n    \n- Automatically populates the 'lodge' and 'messages.sender' fields\n    \n\nError Responses:\n\n- 400 - Invalid negotiation ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized (user is not part of this negotiation)\n    \n- 404 - Negotiation not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Negotiation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"accepted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/negotiations/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "negotiations",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bcf7d6bb4fb122e693c76c"
+                }
+              ]
+            },
+            "description": "Updates the status of a specific rent negotiation.  \nUsed by admins/landlords to accept or reject, or by users to cancel.\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Must be a participant in the negotiation or an Admin\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId of the negotiation\n    \n\nRequest Body:\n\n- status (string, required) - The new status (e.g., \"accepted\", \"rejected\", \"cancelled\")  \n    Example: { \"status\": \"accepted\" }\n    \n\nSuccess Response (200):\n\n- Returns the updated negotiation document\n    \n\nError Responses:\n\n- 400 - Invalid negotiation ID format or invalid status\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized to update this negotiation\n    \n- 404 - Negotiation not found"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Message to Negotiation",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": \"Thank you for accepting my offer! How do I pay?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/negotiations/:id/messages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "negotiations",
+                ":id",
+                "messages"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "69bcf7d6bb4fb122e693c76c"
+                }
+              ]
+            },
+            "description": "Adds a new message to an existing rent negotiation.  \nAutomatically routes the message to the other participant (corper to landlord, or landlord to corper).\n\nRequirements:\n\n- Must be logged in (Bearer token required)\n    \n- Must be an active participant in the negotiation (or an Admin)\n    \n\nPath Variables:\n\n- id (string, required) - Valid MongoDB ObjectId of the negotiation\n    \n\nRequest Body:\n\n- content (string, required) - The text of the message  \n    Example: { \"content\": \"Thank you for accepting my offer! How do I pay?\" }\n    \n\nSuccess Response (201):\n\n- Returns the newly created message document\n    \n- Automatically populates the sender and receiver details (name, email)\n    \n\nError Responses:\n\n- 400 - Missing message content or invalid negotiation ID format\n    \n- 401 - Not authorized, no token\n    \n- 403 - Not authorized (user is not part of this negotiation)\n    \n- 404 - Negotiation not found"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5001/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
