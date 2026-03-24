@@ -14,10 +14,10 @@ export const getProfile = async (req, res, next) => {
 
 export const updateProfile = async (req, res, next) => {
   try {
-    const { postedState, phone, preferences } = req.body;
+    const { postedState, phone, stateCode, ppa, lga, batch, preferences } = req.body;
     const profile = await Profile.findOneAndUpdate(
       { user: req.user._id },
-      { postedState, phone, preferences },
+      { postedState, phone, stateCode, ppa, lga, batch, preferences },
       { new: true, upsert: true, runValidators: true }
     );
     res.json(profile);

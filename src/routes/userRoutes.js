@@ -13,7 +13,10 @@ router.route('/profile')
     [
       body('postedState').optional().trim().escape(),
       body('phone').optional().trim().escape(),
-      // preferences is a Map, cannot be escaped easily; we assume it's safe or handled elsewhere.
+      body('stateCode').optional().trim().escape(),
+      body('ppa').optional().trim().escape(),
+      body('lga').optional().trim().escape(),
+      body('batch').optional().trim().escape(),
     ],
     validateRequest,
     updateProfile

@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const lodgeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
+    state: String,
     area: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Area', 

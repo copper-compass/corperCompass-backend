@@ -14,7 +14,7 @@ export const getCulturalContent = async (req, res, next) => {
     if (category) filter.category = category;
     if (state) filter.state = state;
     const content = await CulturalContent.find(filter).sort({ category: 1, title: 1 });
-    res.json(content);
+    res.json({ content });
   } catch (error) {
     next(error);
   }
@@ -28,7 +28,7 @@ export const getCulturalContentById = async (req, res, next) => {
       res.status(404);
       throw new Error('Content not found');
     }
-    res.json(content);
+    res.json({ content });
   } catch (error) {
     next(error);
   }
@@ -37,7 +37,7 @@ export const getCulturalContentById = async (req, res, next) => {
 export const createCulturalContent = async (req, res, next) => {
   try {
     const content = await CulturalContent.create(req.body);
-    res.status(201).json(content);
+    res.status(201).json({ content });
   } catch (error) {
     next(error);
   }

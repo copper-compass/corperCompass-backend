@@ -18,7 +18,7 @@ export const getLodges = async (req, res, next) => {
     }
     
     const lodges = await Lodge.find(filter).populate('area', 'name state');
-    res.json(lodges);
+    res.json({ lodges });
   } catch (error) {
     next(error);
   }
@@ -38,7 +38,7 @@ export const getLodgeById = async (req, res, next) => {
       res.status(404);
       throw new Error('Lodge not found');
     }
-    res.json(lodge);
+    res.json({ lodge });
   } catch (error) {
     next(error);
   }
@@ -52,7 +52,7 @@ export const createLodge = async (req, res, next) => {
       lodgeData.location = { type: 'Point', coordinates: location.coordinates };
     }
     const lodge = await Lodge.create(lodgeData);
-    res.status(201).json(lodge);
+    res.status(201).json({ lodge });
   } catch (error) {
     next(error);
   }

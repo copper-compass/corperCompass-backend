@@ -40,7 +40,7 @@ export const getMyMessages = async (req, res, next) => {
     })
       .populate('sender receiver', 'name email')
       .sort('-createdAt');
-    res.json(messages);
+    res.json({ messages });
   } catch (error) {
     next(error);
   }
@@ -59,7 +59,7 @@ export const getConversation = async (req, res, next) => {
     })
       .populate('sender receiver', 'name email')
       .sort('createdAt');
-    res.json(messages);
+    res.json({ messages });
   } catch (error) {
     next(error);
   }

@@ -4,19 +4,22 @@ import generateToken from '../utils/generateToken.js';
 
 export const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, postedState } = req.body;
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400);
       throw new Error('User already exists');
     }
     const user = await User.create({ name, email, password });
-    const profile = await Profile.create({ user: user._id });
+    const profile = await Profile.create({ user: user._id, postedState });
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      profile,
       token: generateToken(user._id),
     });
   } catch (error) {

@@ -34,7 +34,7 @@ export const getMapMarkers = async (req, res, next) => {
         lng: lodge.location.coordinates[0],
       })),
     ];
-    res.json(markers);
+    res.json({ markers });
   } catch (error) {
     next(error);
   }
